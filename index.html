@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora [-99999..99999]</title>
+</head>
+<body>
+  <!-- Entrada restringida a enteros de 5 digitos [-99999..99999] -->
+  <h1>Calculadora</h1>
+  <form id="calcForm">
+    <label for="num1">Numero 1 (-99999 a 99999):</label>
+    <input type="number" id="num1" name="num1" min="-99999" max="99999" step="1" required>
+
+    <label for="operacion">Operacion:</label>
+    <select id="operacion" name="operacion">
+      <option value="suma">Suma (+)</option>
+      <option value="resta">Resta (-)</option>
+      <option value="multiplicacion">Multiplicacion (*)</option>
+      <option value="potencia">Potencia (^)</option>
+    </select>
+
+    <label for="num2">Numero 2 (-99999 a 99999):</label>
+    <input type="number" id="num2" name="num2" min="-99999" max="99999" step="1" required>
+
+    <button type="submit">Calcular</button>
+  </form>
+
+  <p id="resultado"></p>
+
+  <script>
+    // Validacion estricta de enteros en [-99999, 99999] y operaciones permitidas
+    document.getElementById("calcForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const n1 = Number(document.getElementById("num1").value);
+      const n2 = Number(document.getElementById("num2").value);
+      const op = document.getElementById("operacion").value;
+      const out = document.getElementById("resultado");
+
+      if (!Number.isInteger(n1) || !Number.isInteger(n2) || n1 < -99999 || n1 > 99999 || n2 < -99999 || n2 > 99999) {
+        out.textContent = "Error: ambos numeros deben ser enteros entre -99999 y 99999.";
+        return;
+      }
+
+      let res;
+      if (op === "suma") {
+        res = n1 + n2;
+      } else if (op === "resta") {
+        res = n1 - n2;
+      } else if (op === "multiplicacion") {
+        res = n1 * n2;
+      } else if (op === "potencia") {
+        if (n2 < 0) {
+          out.textContent = "Error: exponente negativo no soportado.";
+          return;
+        }
+        res = BigInt(n1) ** BigInt(n2);
+      }
+
+      out.textContent = "Resultado: " + res.toString();
+    });
+  </script>
+</body>
+</html>
